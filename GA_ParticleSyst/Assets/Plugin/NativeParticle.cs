@@ -18,16 +18,17 @@ public class NativeParticle : MonoBehaviour
     private static extern void InitParticles(int count);
 
     [DllImport("NativeParticle")]
-    private static extern void UpdateParticles(float deltaTime, float speed);
+    private static extern void UpdateParticles(float deltaTime, float speed, float gravity);
 
     [DllImport("NativeParticle")]
-    private static extern IntPtr GetParticles(); // Usamos IntPtr para memoria nativa
+    private static extern IntPtr GetParticles();
 
     [DllImport("NativeParticle")]
     private static extern int GetParticleCount();
 
     public int particleCount = 1000;
     public float simulationSpeed = 1.0f;
+    public float gravity = -9.81f;  // Gravedad añadida
     public GameObject particlePrefab;
 
     private Transform[] particleTransforms;
@@ -36,24 +37,28 @@ public class NativeParticle : MonoBehaviour
     {
         InitParticles(particleCount);
 
-        // Crear visualización en Unity (
         particleTransforms = new Transform[particleCount];
         for (int i = 0; i < particleCount; i++)
         {
             particleTransforms[i] = Instantiate(particlePrefab).transform;
+
+            // Opcional: Posiciones iniciales aleatorias
+            float x = UnityEngine.Random.Range(-10f, 10f);
+            float y = UnityEngine.Random.Range(0f, 20f);
+            float z = UnityEngine.Random.Range(-10f, 10f);
+            particleTransforms[i].position = new Vector3(x, y, z);
         }
     }
 
     void Update()
     {
-        // 1. Actualizar lógica en C++
-        UpdateParticles(Time.deltaTime, simulationSpeed);
+        // Actualizar lógica en C++ con gravedad
+        UpdateParticles(Time.deltaTime, simulationSpeed, gravity);
 
-        // 2. Obtener datos de C++
+        // Obtener y aplicar posiciones
         IntPtr particlePtr = GetParticles();
         int size = Marshal.SizeOf(typeof(Particle));
 
-        // 3. Aplicar posiciones a Unity
         for (int i = 0; i < particleCount; i++)
         {
             IntPtr currentParticlePtr = new IntPtr(particlePtr.ToInt64() + i * size);
