@@ -33,8 +33,6 @@ Shader "Custom/DisplayShader"
                 float2 uv : TEXCOORD0;
             };
 
-
-
             Varyings vert(Attributes v)
             {
                 Varyings o;

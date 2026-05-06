@@ -4,11 +4,10 @@ using UnityEngine.InputSystem;
 public class Painter : MonoBehaviour
 {
     public Material displayMaterial;
-    public Material paintmaterial;
+    public Material paintMaterial;
     public RenderTexture renderTexture;
 
-    private Camera cam;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Camera cam;
     void Start()
     {
         cam = Camera.main;
@@ -18,13 +17,15 @@ public class Painter : MonoBehaviour
         GL.Clear(true,true,Color.white);
         RenderTexture.active = null;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Mouse.current != null) return;
+        if (Mouse.current.leftButton.isPressed)
+            Debug.Log("hit");
+        if (Input.GetKeyDown(KeyCode.I)) Debug.Log("castre");
         if (Input.GetMouseButton(0))
         {
+            Debug.Log("hit del raycast");
             Ray ray=cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -35,13 +36,13 @@ public class Painter : MonoBehaviour
                     Vector2 uv = hit.textureCoord;
                     if (uv == Vector2.zero)
                     {
-                        Vector3 local=transform.InverseTransformPoint(hit.point);
+                        Vector3 local = transform.InverseTransformPoint(hit.point);
                         uv = new Vector2(local.x + 0.5f, local.y + 0.5f);
                     }
-                    paintmaterial.SetVector("_BrushPos", new Vector4(uv.x, uv.y, 0, 0));
+                    paintMaterial.SetVector("_BrushPos", new Vector4(uv.x, uv.y, 0, 0));
                     RenderTexture temp = RenderTexture.GetTemporary(renderTexture.width, renderTexture.height);
                     Graphics.Blit(renderTexture, temp);
-                    Graphics.Blit(temp, renderTexture, paintmaterial);
+                    Graphics.Blit(temp, renderTexture, paintMaterial);
                     RenderTexture.ReleaseTemporary(temp);
                 }
             }

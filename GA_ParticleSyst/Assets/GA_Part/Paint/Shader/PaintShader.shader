@@ -3,8 +3,8 @@ Shader "Custom/PaintShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _BrushPos ("Brush Position", vector) = (0,0,0,0)
-        _BrushSize ("Brush Size", float) = 0.3
+        _BrushPos ("Brush Position", Vector) = (0,0,0,0)
+        _BrushSize ("Brush Size", Float) = 0.3
         _BrushColor ("Brush Color", Color) = (1,0,0,1)
     }
 
@@ -14,7 +14,7 @@ Shader "Custom/PaintShader"
 
         Pass
         {
-            ZTest Always Cull off ZWrite off
+            ZTest Always Cull Off ZWrite Off
             HLSLPROGRAM
 
             #pragma vertex vert
