@@ -38,15 +38,23 @@ public class NativeParticle : MonoBehaviour
         InitParticles(particleCount);
 
         particleTransforms = new Transform[particleCount];
+
         for (int i = 0; i < particleCount; i++)
         {
-            particleTransforms[i] = Instantiate(particlePrefab).transform;
+            GameObject particle = Instantiate(particlePrefab);
+            particleTransforms[i] = particle.transform;
 
-            // Opcional: Posiciones iniciales aleatorias
             float x = UnityEngine.Random.Range(-10f, 10f);
             float y = UnityEngine.Random.Range(0f, 20f);
             float z = UnityEngine.Random.Range(-10f, 10f);
             particleTransforms[i].position = new Vector3(x, y, z);
+
+            Renderer rend = particle.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                rend.material = new Material(rend.material);
+                rend.material.color = UnityEngine.Random.ColorHSV();
+            }
         }
     }
 

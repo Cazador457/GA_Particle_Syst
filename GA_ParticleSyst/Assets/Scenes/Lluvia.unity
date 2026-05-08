@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f362ec69e6627542b5f016b1a2a72fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NativeParticle
-  particleCount: 50
+  particleCount: 200
   simulationSpeed: 1
   gravity: -9.81
   particlePrefab: {fileID: 1734992338528167611, guid: e816a264ec54fec47b4aed81dc8cfad0, type: 3}
